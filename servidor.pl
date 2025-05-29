@@ -7,6 +7,8 @@
 :- use_module(mesatezapala).  % Importamos el módulo con las soluciones
 
 
+%se inicia el servidor con "iniciar_servidor."
+
 
 %RUTAS
 
