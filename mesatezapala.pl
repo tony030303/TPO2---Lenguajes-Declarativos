@@ -1,3 +1,6 @@
+% mesatezapala.pl
+
+
 %%Una mujer invitó recientemente a tomar el té a cinco personas. 
 %%Los nombres de las seis mujeres que se sentaron alrededor de una 
 %%mesa circular eran: Jane, Ada, Katherine, Marie, Grace y Chien. 
@@ -21,27 +24,6 @@
 :- use_module(library(http/html_write)).
 
 
-% Predicado para mostrar soluciones en formato HTML
-mostrar_solucion_html(Sol) :-
-    Mujeres = ['Jane','Ada','Katherine','Marie','Grace','Chien'],
-    Caracteristicas = ['Profesora','Modesta','OdiaPolillas','AdmiraMarie','Viajera','DueñaCasa'],
-    
-    % Crear filas de la tabla
-    findall(
-        tr([td(M), td(P), td(C)]),
-        (nth1(P, Sol, _), nth1(P, Mujeres, M), nth1(P, Caracteristicas, C)),
-        Filas
-    ),
-    
-    % Crear tabla HTML completa
-    reply_html_page(
-        title('Solución Mesa de Té'),
-        [
-            h1('Disposición en la mesa'),
-            table([border='1'],
-                [tr([th('Mujer'), th('Posición'), th('Característica')]) | Filas]
-            )
-        ]).
 
 formatlist([]) :-
     format("|~`-t~15+|~`-t~`-t~15+|~`-t~`-t~15+|~`-t~`-t~15+|~`-t~`-t~15+|~`-t~15+|~n",[]).
