@@ -24,7 +24,7 @@
 :- use_module(library(http/html_write)).
 
 
-
+% Imprime una tabla formateada con separadores y valores
 formatlist([]) :-
     format("|~`-t~15+|~`-t~`-t~15+|~`-t~`-t~15+|~`-t~`-t~15+|~`-t~`-t~15+|~`-t~15+|~n",[]).
 formatlist([[A,B,C,D,E,F]|Y]) :-
@@ -32,12 +32,18 @@ formatlist([[A,B,C,D,E,F]|Y]) :-
     format("|~w~t~15+|~w~t~15+|~w~t~15+|~w~t~15+|~w~t~15+|~w~t~15+|~n",[A,B,C,D,E,F]),
     formatlist(Y).
 
+
+% Relación de "enfrente": diferencia absoluta 
+% de 3 posiciones (mesa circular de 6 sillas)
 enfrente(H,N) :-
     abs(H-N) #= 3.
 
+%Relación de "al lado": diferencia de 1 posición
 al_lado(H,N) :-
     abs(H-N) #= 1.
 
+% Relación de "a la izquierda": H está  
+% justo antes que N en sentido horario
 izquierda(H,N) :-
     (
 	N #= 0, H #= 6
@@ -45,26 +51,32 @@ izquierda(H,N) :-
     H #= N - 1
     ).
 
-
+% solución del problema con restricciones impuestas
 solution(Pairs,Vs) :-
-
+    % se crean dos listas: una para nombres y otra para características
     Table = [Mujeres,Caracteristicas],
 
-    Mujeres = [Jane,Ada,Katherine,_Marie,_Grace,Chien],
-    MuNames = [jane,ada,katherine,marie,grace,chien],
-    pairs_keys_values(PairsM,Mujeres,MuNames),
+    Mujeres = [Jane,Ada,Katherine,_Marie,_Grace,Chien], % variables para posiciones de mujeres
+    MuNames = [jane,ada,katherine,marie,grace,chien], % nombres asociados a las variables
+    pairs_keys_values(PairsM,Mujeres,MuNames),  % pares variable-nombre 
 
-    Caracteristicas = [Profesora,_Modesta,Odia_Polilla,Admira_Marie,Viajera,Duenia],
-    CaracterisNames = [profesora,modesta,odia_Polilla,admira_Marie,viajera,duenia],
-    pairs_keys_values(PairsC,Caracteristicas,CaracterisNames),
+    Caracteristicas = [Profesora,_Modesta,Odia_Polilla,Admira_Marie,Viajera,Duenia], % variables para características
+    CaracterisNames = [profesora,modesta,odia_Polilla,admira_Marie,viajera,duenia], % nombres de características
+    pairs_keys_values(PairsC,Caracteristicas,CaracterisNames), % pares variable-característica
 
+    % agrupación general de pares para salida
     Pairs = [PairsM,PairsC],
 
-    maplist(all_distinct,Table),
+    % todas las posiciones deben ser distintas
+    maplist(all_distinct,Table), 
+
+    % se aplanan las listas en una sola
     append(Table,Vs),
+
+    % dominio de valores: 1 a 6 (6 asientos)
     Vs ins 1..6,
-%% ESCRIBIR RESTRICCIONES         
-    
+
+    % Restricciones          
     enfrente(Admira_Marie,Ada),
     enfrente(Profesora,Katherine),
     al_lado(Katherine,Viajera),
@@ -78,7 +90,12 @@ solution(Pairs,Vs) :-
     al_lado(Chien,Odia_Polilla),
     enfrente(Chien,Duenia).
 
-main :- solution(Pairs,Vs), label(Vs),maplist(list_to_ord_set,Pairs,M),formatlist(M).
+% se busca la solución, etiqueta variables, convierte los pares a conjuntos ordenados e imprime
+main :- 
+    solution(Pairs,Vs), 
+    label(Vs),
+    maplist(list_to_ord_set,Pairs,M), % se convierte cada lista de pares en conjunto ordenado
+    formatlist(M). % se imprime el resultado
 
 % Predicado principal para mostrar todas las soluciones
 mostrar_todas_soluciones :-
