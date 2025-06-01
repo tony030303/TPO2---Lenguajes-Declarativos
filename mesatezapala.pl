@@ -16,6 +16,7 @@
 %%La señora Chien, que era buena amiga de todas, se sentó junto a la mujer odia 
 %%las polillas y enfrente de la dueña de casa.
 
+:- module(mesatezapala, [solution/2]).
 
 :- use_module(library(lists)).
 :- use_module(library(clpfd)).
