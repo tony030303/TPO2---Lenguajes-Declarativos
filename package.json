@@ -1,0 +1,23 @@
+{
+  "name": "tpo2---lenguajes-declarativos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StheyCede/TPO2---Lenguajes-Declarativos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StheyCede/TPO2---Lenguajes-Declarativos/issues"
+  },
+  "homepage": "https://github.com/StheyCede/TPO2---Lenguajes-Declarativos#readme",
+  "dependencies": {
+    "tau-prolog": "^0.3.4"
+  }
+}

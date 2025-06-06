@@ -50,3 +50,49 @@ input[type="submit"]:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+mazo {
+    display: flex;
+    gap: 15px; /* Espacio entre las cartas */
+    margin-right: 50px;
+}
+
+carta {
+    width: 100px;
+    height: 150px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: grab; /* Indica que es arrastrable */
+    transition: transform 0.2s ease-in-out; /* Transición suave al arrastrar */
+}
+
+carta:active {
+    cursor: grabbing; /* Cambia el cursor mientras se arrastra */
+}
+
+zona-soltar {
+    width: 300px;
+    min-height: 200px;
+    background-color: #e6e6e6;
+    border: 2px dashed #999;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-style: italic;
+    color: #666;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Estilo cuando una carta está sobre la zona de soltar */
+zona-soltar.dragover {
+    background-color: #d0e0d0;
+    border-color: #00cc00;
+}
