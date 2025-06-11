@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Juego de Lógica de Té con Tau-Prolog</title>
+    <title>Juego de Lógica de Té [JS, SwiProlog, ScryerProlog]</title>
     <link rel="stylesheet" href="styles.css">
 </head> 
 <body>
@@ -77,15 +77,30 @@
                 <div class="asiento-caracteristica-slot" data-slot-type="caracteristica">Coloca Característica</div>
             </div>
         </div>
+
+        <div class="contenedor-salida">
+            <h2>Salida</h2>
+            <div id="output"></div>
+        </div>
     </div>
 
     <div class="botones">
         <button id="checkSolutionButton" class="button-brown">Verificar Solución</button>
         <button id="generateSolutionButton" class="button-dark-green">Generar Solución</button>
+        <button id="restart" class="button-dark-red">Reiniciar</button>
     </div>
 
-    <pre id="output">Mensajes del juego / depuración de Prolog:</pre>
-
-    <script type="module" src="./script.js"></script>
+    <div class="instrucciones">
+        <p>
+            Arrastrá las cartas de las científicas a los asientos y las características a sus lugares correspondientes.<br><br>
+            Luego, hace clic en <strong>'Verificar Solución'</strong> para comprobar la válidez de tu combinación.<br><br>
+            También podes clickear <strong>'Generar Solución'</strong> para ver alguna solución al problema lógico.
+        </p>
+    </div>
+    
+    <div class="marca-agua">Lenguajes Declarativos - Grupo: Paula Coronel, Sthefany Cedeño, Antonio Sarmiento</div>
+    <script type="module" src="./main.js"></script>
+    <script type="module" src="./dragdrop.js"></script>
+    
 </body>
 </html>

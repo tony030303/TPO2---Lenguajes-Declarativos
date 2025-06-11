@@ -1,4 +1,4 @@
-% mesatezapala.pl
+% mesate.pl
 
 
 %%Una mujer invitó recientemente a tomar el té a cinco personas. 
@@ -16,8 +16,6 @@
 %%La señora Chien, que era buena amiga de todas, se sentó junto a la mujer odia 
 %%las polillas y enfrente de la dueña de casa.
 
-%:- module(mesatezapala, [generar_solucion/2, verificar_solucion/2, main/0, mostrar_todas_soluciones/0]).
-
 :- use_module(library(lists)).
 :- use_module(library(clpz)).
 :- use_module(library(pairs)).
@@ -25,7 +23,7 @@
 
 
 
-% Imprime una tabla formateada con separadores y valores
+% imprime una tabla formateada con separadores y valores
 formatlist([]) :-
     format("|~`-t~15+|~`-t~`-t~15+|~`-t~`-t~15+|~`-t~`-t~15+|~`-t~`-t~15+|~`-t~15+|~n",[]).
 formatlist([[A,B,C,D,E,F]|Y]) :-
@@ -34,16 +32,16 @@ formatlist([[A,B,C,D,E,F]|Y]) :-
     formatlist(Y).
 
 
-% Relación de "enfrente": diferencia absoluta 
+% relación de "enfrente": diferencia absoluta 
 % de 3 posiciones (mesa circular de 6 sillas)
 enfrente(H,N) :-
     abs(H-N) #= 3.
 
-%Relación de "al lado": diferencia de 1 posición
+%relación de "al lado": diferencia de 1 posición
 al_lado(H,N) :-
     abs(H-N) #= 1.
 
-% Relación de "a la izquierda": H está  
+% relación de "a la izquierda": H está  
 % justo antes que N en sentido horario
 izquierda(H,N) :-
     (H #= N - 1; N #= 1, H #= 6).
@@ -61,7 +59,7 @@ generar_solucion(Asientos, Categorias) :-
     CaracterisNames = [profesora, modesta, odia_polillas, admira_marie, viajera, duena_casa], % nombres de características
     pairs_keys_values(PairsC, Caracteristicas, CaracterisNames), % pares variable-característica
 
-    % Convertir pares a listas de términos en_asiento/2 y tiene_caracteristica/2
+    % se convierten pares a listas de términos en_asiento/2 y tiene_caracteristica/2
     maplist(en_asiento, PairsM, Asientos),
     maplist(tiene_caracteristica, PairsC, Categorias),
 
@@ -74,7 +72,7 @@ generar_solucion(Asientos, Categorias) :-
     % dominio de valores: 1 a 6 (6 asientos)
     Vs ins 1..6,
 
-    % Restricciones          
+    % restricciones          
     enfrente(Admira_Marie,Ada),
     enfrente(Profesora,Katherine),
     al_lado(Katherine,Viajera),
@@ -87,16 +85,17 @@ generar_solucion(Asientos, Categorias) :-
     enfrente(Ada,Admira_Marie),
     al_lado(Chien,Odia_Polillas),
     enfrente(Chien,Duena_Casa),
-    % Etiquetar las variables de posición para obtener una solución completa
+    
+    % se etiquetan las variables de posición para obtener una solución completa
     label(Vs).
 
 
-% Predicado para verificar una solución dada
+% predicado para verificar una solución dada
 verificar_solucion(Asientos, Categorias) :-
     Mujeres = [Jane, Ada, Katherine, Marie, Grace, Chien],
     Caracteristicas = [Profesora, Modesta, Odia_Polillas, Admira_Marie, Viajera, Duena_Casa],
     Table = [Mujeres, Caracteristicas],
-    % Assign positions from Asientos
+    % asignar posiciones desde Asientos
     member(en_asiento(jane, Jane), Asientos),
     member(en_asiento(ada, Ada), Asientos),
     member(en_asiento(katherine, Katherine), Asientos),
@@ -104,14 +103,14 @@ verificar_solucion(Asientos, Categorias) :-
     member(en_asiento(grace, Grace), Asientos),
     member(en_asiento(chien, Chien), Asientos),
     all_distinct(Mujeres),
-    % Assign characteristics from Categorias
+    % asignar características desde Categorias
     member(tiene_caracteristica(ProfName, profesora), Categorias),
     member(tiene_caracteristica(ModName, modesta), Categorias),
     member(tiene_caracteristica(OdiaName, odia_polillas), Categorias),
     member(tiene_caracteristica(AdmiraName, admira_marie), Categorias),
     member(tiene_caracteristica(ViajeraName, viajera), Categorias),
     member(tiene_caracteristica(DueniaName, duena_casa), Categorias),
-    % Map names to positions
+    % mapear nombres a posiciones
     member(en_asiento(ProfName, Profesora), Asientos),
     member(en_asiento(ModName, Modesta), Asientos),
     member(en_asiento(OdiaName, Odia_Polillas), Asientos),
@@ -121,7 +120,7 @@ verificar_solucion(Asientos, Categorias) :-
     all_distinct(Caracteristicas),
     append(Table, Vs),
     Vs ins 1..6,
-    % Apply constraints
+    % aplicar restricciones
     enfrente(Admira_Marie, Ada),
     enfrente(Profesora, Katherine),
     al_lado(Katherine, Viajera),
@@ -134,9 +133,9 @@ verificar_solucion(Asientos, Categorias) :-
     enfrente(Ada, Admira_Marie),
     al_lado(Chien, Odia_Polillas),
     enfrente(Chien, Duena_Casa),
-    !.
+    !. %evitamos los resultados "false" luego de comprobar
 
-% Predicado principal para mostrar todas las soluciones
+% predicado principal para mostrar todas las soluciones
 mostrar_todas_soluciones :-
     findall(Sol, (generar_solucion(_, Sol), label(Sol)), Soluciones),
     length(Soluciones, Count),
@@ -159,11 +158,11 @@ mostrar_solucion(Sol) :-
     format('Mujeres: ~w~n', [PairsM]),
     format('Características: ~w~n', [PairsC]).
 
-% Predicados auxiliares para maplist
+% predicados auxiliares para maplist
 en_asiento(X-Y, en_asiento(X, Y)).
 tiene_caracteristica(X-Y, tiene_caracteristica(X, Y)).
 
-% Predicado main para encontrar e imprimir una solución
+% predicado main para encontrar e imprimir una solución
 main :-
     generar_solucion(Pairs, Vs),
     label(Vs),
