@@ -1,60 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CLP(Z) Solver</title>
-    <script src="https://tau-prolog.org/tau-prolog.js"></script>
-    <script src="http://localhost:8080/pengine/pengines.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-</head>
+    <meta charset="UTF-8">
+    <title>Juego de Lógica de Té con Tau-Prolog</title>
+    <link rel="stylesheet" href="styles.css">
+</head> 
 <body>
-    <h1>CLP(Z) Solver</h1>
-    <label for="sum">Suma:</label>
-    <input type="number" id="sum" value="12"><br>
-    <label for="product">Producto:</label>
-    <input type="number" id="product" value="32"><br>
-    <button onclick="solve()">Resolver</button>
-    <div id="result"></div>
+    <h1>Juego de Lógica: Las Seis Mujeres del Té</h1>
 
-    <script>
-        console.log('Tau Prolog cargado:', typeof pl !== 'undefined' ? 'Sí' : 'No'); // Verificar Tau Prolog
-        const session = pl.create();
-        console.log('Sesión creada:', session);
+    <div class="game-layout">
+        <div class="contenedor-condiciones">
+            <h2>Pistas del Rompecabezas</h2>
+            <ul>
+                <li>La mujer que admiraba a Marie se sentó enfrente de la señora Ada.</li>
+                <li>La mujer que era profesora se sentó enfrente de la señora Katherine.</li>
+                <li>Katherine, se sentó entre la mujer que era viajera y la mujer que admiraba a Marie.</li>
+                <li>La mujer que odiaba a las polillas se sentó frente a la señora Jane.</li>
+                <li>La mujer que odiaba a las polillas se sentó junto a la mujer que era profesora y a la izquierda de la que admiraba a Marie.</li>
+                <li>La mujer que era viajera se sentó al lado de la señora Katherine.</li>
+                <li>La mujer viajera se sentó al lado de Ada.</li>
+                <li>Ada se sentó enfrente de la mujer que admiraba a Marie.</li>
+                <li>La señora Chien se sentó junto a la mujer odia las polillas y enfrente de la dueña de casa.</li>
+            </ul>
+        </div>
+        <div class="cards-container">
+            <div class="contenedor-cartas" id="personas-disponibles">
+                <h2>Personas</h2>
+                <div class="carta persona-carta" id="jane" draggable="true">Jane</div>
+                <div class="carta persona-carta" id="ada" draggable="true">Ada</div>
+                <div class="carta persona-carta" id="katherine" draggable="true">Katherine</div>
+                <div class="carta persona-carta" id="marie" draggable="true">Marie</div>
+                <div class="carta persona-carta" id="grace" draggable="true">Grace</div>
+                <div class="carta persona-carta" id="chien" draggable="true">Chien</div>
+            </div>
 
-        function solve() {
-            console.log('Función solve() ejecutada'); // Depurar clic
-            const sum = parseInt(document.getElementById('sum').value);
-            const product = parseInt(document.getElementById('product').value);
-            console.log('Sum:', sum, 'Product:', product); // Depurar valores
-            const params = `dict{sum:${sum}, product:${product}}`;
-            console.log('Params:', params); // Depurar consulta
+            <div class="contenedor-cartas" id="caracteristicas-disponibles">
+                <h2>Características</h2>
+                <div class="carta caracteristica-carta" id="profesora" draggable="true">Profesora</div>
+                <div class="carta caracteristica-carta" id="modesta" draggable="true">Modesta</div>
+                <div class="carta caracteristica-carta" id="odia_polillas" draggable="true">Odia Polillas</div>
+                <div class="carta caracteristica-carta" id="admira_marie" draggable="true">Admira a Marie</div>
+                <div class="carta caracteristica-carta" id="viajera" draggable="true">Viajera</div>
+                <div class="carta caracteristica-carta" id="duena_casa" draggable="true">Dueña de Casa</div>
+            </div>
+        </div>
 
-            const pengine = new Pengine({
-                server: 'http://localhost:8080/pengine',
-                application: 'clp',
-                onsuccess: function() {
-                    console.log('Respuesta completa:', this.data); // Depurar respuesta
-                    if (this.data && this.data[0] && this.data[0].Solution) {
-                        const solution = this.data[0].Solution;
-                        document.getElementById('result').innerText = 
-                            `Solución: X = ${solution[0]}, Y = ${solution[1]}`;
-                    } else {
-                        document.getElementById('result').innerText = 
-                            'Error: No se encontró solución válida';
-                    }
-                },
-                onerror: function() {
-                    console.log('Error:', this.error); // Depurar error
-                    document.getElementById('result').innerText = 'Error: ' + this.error;
-                },
-                oncreate: function() {
-                    console.log('Pengine creado:', this); // Depurar creación
-                }
-            });
-            pengine.ask(`solve(${params}, Solution).`);
-            console.log('Consulta enviada');
-        }
-    </script>
+        <div id="mesa-circular">
+            <div class="asiento-zona" id="1">
+                <p>Asiento 1</p>
+                <div class="asiento-persona-slot" data-slot-type="persona">Coloca Persona</div>
+                <div class="asiento-caracteristica-slot" data-slot-type="caracteristica">Coloca Característica</div>
+            </div>
+            <div class="asiento-zona" id="2">
+                <p>Asiento 2</p>
+                <div class="asiento-persona-slot" data-slot-type="persona">Coloca Persona</div>
+                <div class="asiento-caracteristica-slot" data-slot-type="caracteristica">Coloca Característica</div>
+            </div>
+            <div class="asiento-zona" id="3">
+                <p>Asiento 3</p>
+                <div class="asiento-persona-slot" data-slot-type="persona">Coloca Persona</div>
+                <div class="asiento-caracteristica-slot" data-slot-type="caracteristica">Coloca Característica</div>
+            </div>
+            <div class="asiento-zona" id="4">
+                <p>Asiento 4</p>
+                <div class="asiento-persona-slot" data-slot-type="persona">Coloca Persona</div>
+                <div class="asiento-caracteristica-slot" data-slot-type="caracteristica">Coloca Característica</div>
+            </div>
+            <div class="asiento-zona" id="5">
+                <p>Asiento 5</p>
+                <div class="asiento-persona-slot" data-slot-type="persona">Coloca Persona</div>
+                <div class="asiento-caracteristica-slot" data-slot-type="caracteristica">Coloca Característica</div>
+            </div>
+            <div class="asiento-zona" id="6">
+                <p>Asiento 6</p>
+                <div class="asiento-persona-slot" data-slot-type="persona">Coloca Persona</div>
+                <div class="asiento-caracteristica-slot" data-slot-type="caracteristica">Coloca Característica</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="botones">
+        <button id="checkSolutionButton" class="button-brown">Verificar Solución</button>
+        <button id="generateSolutionButton" class="button-dark-green">Generar Solución</button>
+    </div>
+
+    <pre id="output">Mensajes del juego / depuración de Prolog:</pre>
+
+    <script type="module" src="./script.js"></script>
 </body>
 </html>
